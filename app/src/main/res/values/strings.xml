@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">My ApplicationGraphAPI</string>
+    <string name="facebook_app_id">131578604067074</string>
+    <string name="devlp_Key_Hash">OcX+jN5IfUy9P6j2MK92tuPh4iE=</string>
+    <string name="hello">Hello:</string>
+    <string name="share">Share on Facebook</string>
+    <string name="post_on_facebook">Post on Facebook</string>
+    <string name="record">Record</string>
+    <string name="description_info">Description</string>
+    <string name="permission_request">Une permission est nécessaire</string>
+    <string name="intro_message">Bienvenue!</string>
+    <string name="stop">Stop</string>
+    <string name="camera_error">Problème camera</string>
+</resources>
