@@ -57,7 +57,7 @@
             android:id="@+id/getPosts"
             android:layout_gravity="center_horizontal"
             android:onClick="onClick"
-            android:text="@string/post_on_facebook"
+            android:text="@string/streaming"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/share"/>

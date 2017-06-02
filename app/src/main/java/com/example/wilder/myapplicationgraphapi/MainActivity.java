@@ -4,10 +4,16 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.facebook.share.model.ShareHashtag;
 import com.facebook.share.model.ShareLinkContent;
@@ -27,19 +33,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(this);
         setContentView(R.layout.activity_main);
 
+
         Bundle inBundle = getIntent().getExtras();
-        name = inBundle.getString("name");
-        surname = inBundle.getString("surname");
-        imageUrl = inBundle.getString("imageUrl");
 
-        nameView = (TextView)findViewById(R.id.nameAndSurname);
-        nameView.setText("" + name + " " + surname);
+        new GraphRequest(
+                AccessToken.getCurrentAccessToken(), "/me/live_videos", null, HttpMethod.POST,
+                new GraphRequest.Callback() {
+                    public void onCompleted(GraphResponse response) {
+                        Log.e(TAG,response.getJSONObject().toString());
+                    }
+                }
+        ).executeAsync();
 
-        profileView = (ImageView) findViewById(R.id.profileImage);
-        DownLoadImage photo = new DownLoadImage(profileView);
-        photo.execute(imageUrl);
+
+        if (inBundle == null){
+            Intent login = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(login);
+            finish();
+        } else {
+            name = inBundle.getString("name");
+            surname = inBundle.getString("surname");
+            imageUrl = inBundle.getString("imageUrl");
+
+            nameView = (TextView) findViewById(R.id.nameAndSurname);
+            nameView.setText("" + name + " " + surname);
+
+            profileView = (ImageView) findViewById(R.id.profileImage);
+            DownLoadImage photo = new DownLoadImage(profileView);
+            photo.execute(imageUrl);
+        }
 
     }
 
@@ -78,33 +103,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         shareDialog.show(content);
     }
+
+
     public void postLive(){
 
-        Intent camera =new Intent(MainActivity.this, CameraActivity.class);
+        Intent camera =new Intent(MainActivity.this, StreamingActivity.class);
         camera.putExtra("name", name);
         camera.putExtra("surname", surname);
         camera.putExtra("imageUrl", imageUrl.toString());
         startActivity(camera);
-        finish();
 
-        /**
-        new GraphRequest(
-                AccessToken.getCurrentAccessToken(),
-                "me/permissions",
-                null,
-                HttpMethod.GET,
-                new GraphRequest.Callback() {
-                    public void onCompleted(GraphResponse response) {
-                        Log.e(TAG,response.toString());
-                    }
-                }
-        ).executeAsync();}
-         */
 
     }
 
+
+
+
     /**
      * private void getPosts(){
+
      new GraphRequest(
      AccessToken.getCurrentAccessToken(), "/me/posts", null, HttpMethod.GET,
      new GraphRequest.Callback() {
@@ -113,8 +130,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      }
      }
      ).executeAsync();
-     }
-     */
+     }*/
+
     public void logout(){
         LoginManager.getInstance().logOut();
         Intent login = new Intent(MainActivity.this, LoginActivity.class);

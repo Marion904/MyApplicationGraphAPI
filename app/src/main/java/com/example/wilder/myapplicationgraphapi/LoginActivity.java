@@ -100,6 +100,7 @@ public class LoginActivity extends AppCompatActivity {
         };
 
         loginButton.setReadPermissions("email", "user_birthday","user_posts","user_videos");
+
         LoginManager.getInstance().logInWithPublishPermissions(
                 this,
                 Arrays.asList("publish_actions"));

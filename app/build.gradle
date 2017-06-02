@@ -29,4 +29,6 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.18.0'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:support-v13:25.0.1'
+    compile 'net.butterflytv.utils:rtmp-client:0.2.6'
+    compile 'com.google.code.gson:gson:2.8.1'
 }
