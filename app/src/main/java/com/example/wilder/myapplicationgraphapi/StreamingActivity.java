@@ -1,7 +1,6 @@
 package com.example.wilder.myapplicationgraphapi;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -11,7 +10,6 @@ import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.TotalCaptureResult;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.annotation.NonNull;
@@ -28,6 +26,8 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -109,6 +109,10 @@ public class StreamingActivity extends AppCompatActivity implements SurfaceHolde
         mSurfacView = (SurfaceView) findViewById(R.id.surfaceView);
         mSurfacView.getHolder().addCallback(StreamingActivity.this);
         streamModel = new StreamModel();
+/**
+        LoginManager.getInstance().logInWithPublishPermissions(
+                this,
+                Arrays.asList("publish_actions"));*/
 
         new GraphRequest(
                 AccessToken.getCurrentAccessToken(), "/me/live_videos", null, HttpMethod.POST,
@@ -116,7 +120,12 @@ public class StreamingActivity extends AppCompatActivity implements SurfaceHolde
                     public void onCompleted(GraphResponse response) {
                        //Gson mGson = new Gson();
                         //streamModel=mGson.fromJson(response.toString(),StreamModel.class);
-                        Log.e(TAG,response.getJSONObject().toString());
+                        try {
+                            streamURL=response.getJSONObject().get("stream_url").toString();
+                            Log.e(TAG,response.getJSONObject().get("stream_url").toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
         ).executeAsync();
@@ -252,12 +261,13 @@ public class StreamingActivity extends AppCompatActivity implements SurfaceHolde
     public void surfaceDestroyed(SurfaceHolder holder) {
 
     }
-
+/**
     private String getVideoFilePath(Context context) {
         return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/"
                 + System.currentTimeMillis() + ".mp4";
     }
-      /**
+*/
+/**
     public void createCaptureSession(){
         try {
             mVideoEncoderCore = new VideoEncoderCore(
@@ -281,8 +291,9 @@ public class StreamingActivity extends AppCompatActivity implements SurfaceHolde
             mCameraDevice.createCaptureSession(mSurfaces, mCaptureSessionCallback, mBackgroundHandler);
         } catch (CameraAccessException e) {
             e.printStackTrace();
-        } catch (IOException io) {
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
-       */
+*/
 }
