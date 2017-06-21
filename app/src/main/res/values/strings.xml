@@ -11,4 +11,5 @@
     <string name="intro_message">Bienvenue!</string>
     <string name="stop">Stop</string>
     <string name="camera_error">Problème camera</string>
+    <string name="streaming">Streaming</string>
 </resources>
